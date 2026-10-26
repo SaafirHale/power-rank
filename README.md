@@ -11,6 +11,10 @@ is a data-file edit.
 > The screenshots use **simulated votes** from `npm run simulate`, whose hidden strengths are random. The order shown
 > says nothing about who is actually strongest.
 
+| Vote, after picking | Series board | Controversial | Phone, dark mode |
+| --- | --- | --- | --- |
+| ![Vote result](docs/screenshots/vote-result.jpg) | ![Jujutsu Kaisen board](docs/screenshots/series-board-jjk.jpg) | ![Controversial matchups](docs/screenshots/controversial.jpg) | ![Phone, dark](docs/screenshots/mobile-dark-vote.jpg) |
+
 ## What is on the site
 
 | Page | What it does |

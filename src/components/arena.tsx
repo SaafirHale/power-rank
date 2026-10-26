@@ -141,7 +141,7 @@ export function Arena({ series }: { series: { slug: string; name: string; color:
         </div>
       )}
       {state.kind === "ready" && (
-        <p className="muted small" style={{ marginTop: 16 }}>
+        <p className="muted small keys-tip" style={{ marginTop: 16 }}>
           Click a card, or use the ← and → keys.
         </p>
       )}

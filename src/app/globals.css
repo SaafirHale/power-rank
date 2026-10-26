@@ -174,3 +174,24 @@ button.card:disabled { cursor: default; }
 .prose p, .prose li { color: var(--text); }
 .prose code { background: var(--surface-2); padding: 1px 5px; border-radius: 5px; font-size: 0.9em; }
 .formula { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; font-family: ui-monospace, Consolas, monospace; font-size: 0.9rem; overflow-x: auto; }
+
+/* ---- phones ------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+  .site-header .wrap { gap: 4px 16px; padding-top: 8px; padding-bottom: 8px; }
+  .nav a { padding: 6px 8px; font-size: 0.92rem; }
+  main.wrap { padding-top: 20px; }
+  .arena { gap: 10px; }
+  .card { min-height: 0; padding: 18px 16px 14px; gap: 6px; }
+  .monogram { width: 44px; height: 44px; border-radius: 12px; font-size: 1rem; }
+  .card-name { font-size: 1.2rem; }
+  .card-series { margin-top: 4px; }
+  .vs { font-size: 0.9rem; }
+  .board td, .board th { padding-left: 4px; padding-right: 4px; }
+  .board .hide-xs { display: none; }
+}
+
+/* Arrow-key hints mean nothing on a touch screen. */
+@media (hover: none) {
+  .key-hint, .keys-tip { display: none; }
+}

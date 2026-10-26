@@ -73,7 +73,7 @@ export function Board({
                 <th className="interval hide-sm" aria-label="95% interval">
                   95% interval
                 </th>
-                <th className="num">W–L</th>
+                <th className="num hide-xs">W–L</th>
                 <th className="num hide-sm">Live Elo</th>
               </tr>
             </thead>
@@ -90,7 +90,7 @@ export function Board({
                   <td className="interval hide-sm">
                     <Interval row={r} lo={lo} hi={hi} />
                   </td>
-                  <td className="num">
+                  <td className="num hide-xs">
                     {r.wins}–{r.losses}
                   </td>
                   <td className="num hide-sm muted">{Math.round(r.elo)}</td>
