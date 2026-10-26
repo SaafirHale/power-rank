@@ -38,6 +38,11 @@ describe("matchup token", () => {
     expect(verifyMatchupToken(t, "vid", NOON + MATCHUP_TTL_MS + 1, SECRET)).toBeNull();
     expect(verifyMatchupToken(t.replace(/^3\./, "4."), "vid", NOON, SECRET)).toBeNull();
   });
+
+  it("survives a fractional clock reading", () => {
+    const t = issueMatchupToken(3, 7, "vid", NOON + 0.5, SECRET);
+    expect(verifyMatchupToken(t, "vid", NOON + 1000.25, SECRET)).toEqual({ a: 3, b: 7 });
+  });
 });
 
 describe("network key", () => {

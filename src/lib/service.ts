@@ -254,14 +254,36 @@ export async function castVote(
 
 // ---- controversial -------------------------------------------------------
 
+/**
+ * Lower end of the 95% Wilson score interval for a proportion k/n. Used to
+ * rank controversy: a 50/50 split over 200 votes is surer to be a real
+ * stalemate than 5/5 over 10, and this number captures both closeness and
+ * sample size in one score.
+ */
+export function wilsonLower(k: number, n: number, z = 1.96): number {
+  if (n === 0) return 0;
+  const p = k / n;
+  const z2 = z * z;
+  return (p + z2 / (2 * n) - z * Math.sqrt((p * (1 - p)) / n + z2 / (4 * n * n))) / (1 + z2 / n);
+}
+
+/** A pair only counts as contested if the losing side has at least this share. */
+export const CONTROVERSIAL_MIN_SHARE = 0.3;
+
 export async function getControversial(db: Queryable, opts: { minVotes?: number; limit?: number } = {}) {
-  const rows = await db.query<{ a_id: number; b_id: number; n: number; a_wins: number }>(
+  const pairs = await db.query<{ a_id: number; b_id: number; n: number; a_wins: number }>(
     `select a_id, b_id, count(*)::int as n, (count(*) filter (where winner_id = a_id))::int as a_wins
-     from votes group by a_id, b_id having count(*) >= $1
-     order by abs((count(*) filter (where winner_id = a_id))::float8 / count(*) - 0.5), count(*) desc
-     limit $2`,
-    [opts.minVotes ?? CONTROVERSIAL_MIN_VOTES, opts.limit ?? 30],
+     from votes group by a_id, b_id having count(*) >= $1`,
+    [opts.minVotes ?? CONTROVERSIAL_MIN_VOTES],
   );
+  const rows = pairs
+    .map((r) => {
+      const minority = Math.min(r.a_wins, r.n - r.a_wins);
+      return { ...r, share: minority / r.n, score: wilsonLower(minority, r.n) };
+    })
+    .filter((r) => r.share >= CONTROVERSIAL_MIN_SHARE)
+    .sort((x, y) => y.score - x.score || y.n - x.n)
+    .slice(0, opts.limit ?? 30);
   if (rows.length === 0) return [];
   const ids = [...new Set(rows.flatMap((r) => [r.a_id, r.b_id]))];
   const chars = await db.query<Character>(

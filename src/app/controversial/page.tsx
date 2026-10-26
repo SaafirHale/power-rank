@@ -15,12 +15,13 @@ export default async function ControversialPage() {
     <>
       <h1>Most controversial matchups</h1>
       <p className="lede">
-        The fights the crowd cannot settle: pairs with at least {CONTROVERSIAL_MIN_VOTES} votes, sorted by how close the
-        split is to 50/50, then by how many people voted.
+        The fights the crowd cannot settle. A pair qualifies with at least {CONTROVERSIAL_MIN_VOTES} votes and no more
+        than a 70/30 split, and pairs are ordered by how confident we can be that the split is genuinely close: a 50/50
+        split over 200 votes outranks 5–5 over 10.
       </p>
       {rows.length === 0 ? (
         <p className="notice">
-          No matchup has {CONTROVERSIAL_MIN_VOTES} votes yet. <Link href="/">Start voting</Link>.
+          No matchup with {CONTROVERSIAL_MIN_VOTES}+ votes is that close yet. <Link href="/">Keep voting</Link>.
         </p>
       ) : (
         <ol className="matchups">
@@ -39,7 +40,8 @@ export default async function ControversialPage() {
                   className="split"
                   role="img"
                   aria-label={`${pct(share)} ${a.name}, ${pct(1 - share)} ${b.name}`}
-                  style={{ background: b.color }}
+                  // The right side is a tint so same-series pairs stay readable.
+                  style={{ background: `color-mix(in srgb, ${b.color} 45%, var(--surface-2))` }}
                 >
                   <span style={{ ...accent(a.color), width: pct(share) }} />
                 </div>

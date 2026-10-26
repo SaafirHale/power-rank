@@ -20,6 +20,7 @@ export interface Db extends Queryable {
 
 export async function createPgliteDb(dataDir?: string): Promise<Db> {
   const { PGlite } = await import("@electric-sql/pglite");
+  if (dataDir) (await import("node:fs")).mkdirSync(dataDir, { recursive: true });
   const pg = new PGlite(dataDir);
   await pg.waitReady;
   const q = (runner: { query: typeof pg.query }): Queryable => ({

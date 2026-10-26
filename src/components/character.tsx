@@ -5,7 +5,7 @@ export type CharacterLike = { name: string; form: string | null; seriesName: str
 /** Up to two initials, skipping particles like "D." so "Monkey D. Luffy" is "ML". */
 export function initials(name: string): string {
   const words = name.split(/\s+/).filter((w) => /^[\p{L}]/u.test(w) && !/^[A-Z]\.$/.test(w));
-  if (words.length === 1) return words[0].slice(0, 2);
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
   return (words[0][0] + words[words.length - 1][0]).toUpperCase();
 }
 

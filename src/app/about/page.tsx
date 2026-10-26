@@ -82,8 +82,10 @@ export default function AboutPage() {
 
       <h2>Controversial matchups</h2>
       <p>
-        The controversial page lists pairs with at least {CONTROVERSIAL_MIN_VOTES} votes, closest to a 50/50 split
-        first, with ties broken by vote count.
+        The controversial page lists pairs with at least {CONTROVERSIAL_MIN_VOTES} votes where the losing side still
+        took 30% or more. They are ranked by the lower end of the 95% Wilson interval for the losing side’s share: the
+        share we can be confident the underdog really gets. That one number rewards a split close to 50/50 and a large
+        number of votes at the same time, so 100–100 outranks 5–5, which outranks 7–3.
       </p>
 
       <h2>Fair voting, without accounts</h2>

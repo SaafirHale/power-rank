@@ -9,7 +9,7 @@
  *
  * Stop `npm run dev` first: PGlite allows one process per data directory.
  *
- *   npm run simulate -- --voters 400 --votes 12 --seed 1
+ *   npm run simulate -- --voters 400 --votes 12 --seed 1 [--strength-seed 1]
  */
 import { sigmoid } from "../src/lib/bradley-terry";
 import { MemoryRateLimitStore } from "../src/lib/abuse";
@@ -36,7 +36,10 @@ async function main() {
   const db = await prepare(url ? await createPgDb(url) : await createPgliteDb(process.env.PGLITE_DIR ?? ".data/pglite"));
 
   const chars = await db.query<{ id: number }>(`select id from characters where active`);
-  const gauss = () => Math.sqrt(-2 * Math.log(1 - rng())) * Math.cos(2 * Math.PI * rng());
+  // Strengths get their own seed so repeated runs with different --seed
+  // values add more voters to the same simulated world.
+  const srng = mulberry32(arg("strength-seed", 1));
+  const gauss = () => Math.sqrt(-2 * Math.log(1 - srng())) * Math.cos(2 * Math.PI * srng());
   const strength = new Map(chars.map((c) => [c.id, 1.2 * gauss()]));
   const scopes = ["all", ...(await listSeries(db)).map((s) => s.slug)];
 

@@ -56,7 +56,8 @@ export function voterHash(visitorId: string, secret: string): string {
 export const MATCHUP_TTL_MS = 30 * 60 * 1000;
 
 export function issueMatchupToken(a: number, b: number, visitorId: string, now: number, secret: string): string {
-  const body = `${a}.${b}.${now}`;
+  // Whole milliseconds: a fractional timestamp would add a "." and break parsing.
+  const body = `${a}.${b}.${Math.floor(now)}`;
   return `${body}.${mac(secret, `match:${visitorId}:${body}`)}`;
 }
 

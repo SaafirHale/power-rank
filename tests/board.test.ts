@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createPgliteDb, prepare, type Db } from "../src/lib/db";
-import { MIN_GAMES, getBoard, getControversial } from "../src/lib/service";
+import { MIN_GAMES, getBoard, getControversial, wilsonLower } from "../src/lib/service";
 
 /** Insert `total` raw votes on a pair, the first `xWins` of them won by x. */
 async function votes(db: Db, x: number, y: number, total: number, xWins: number, tag: string) {
@@ -50,7 +50,15 @@ describe("boards", () => {
     expect([first.a.id, first.b.id].sort()).toEqual([...split].sort());
     expect(first.total).toBe(10);
     expect(first.aWins).toBe(5);
-    // The 3-vote pair is below the vote threshold.
-    expect(rows.some((r) => r.total < 10)).toBe(false);
+    // The 3-vote pair is below the vote threshold, and the 9-3 round-robin
+    // pairs are too one-sided to count as contested.
+    expect(rows).toHaveLength(1);
+  });
+
+  it("scores controversy by closeness and sample size together", () => {
+    expect(wilsonLower(100, 200)).toBeGreaterThan(wilsonLower(5, 10));
+    expect(wilsonLower(5, 10)).toBeGreaterThan(wilsonLower(3, 10));
+    expect(wilsonLower(45, 100)).toBeGreaterThan(wilsonLower(5, 10));
+    expect(wilsonLower(0, 0)).toBe(0);
   });
 });
