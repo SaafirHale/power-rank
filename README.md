@@ -1,5 +1,7 @@
 # Power Rank
 
+**Live: https://power-rank.vercel.app**
+
 Crowd-voted anime power scaling. Visitors get two characters head to head ("who wins?") and pick one. Every vote
 feeds a Bradley-Terry model that ranks all characters on one scale, with a 95% interval on every rating.
 
@@ -138,11 +140,15 @@ Add an entry to `SERIES` and a character list to `CHARACTERS` in `src/data/serie
 upserts new rows by slug. Existing characters keep their votes. Characters removed from the file are marked
 inactive, not deleted.
 
-## Deploying (not done yet)
+## Deployment
 
-Planned target: Vercel plus a Neon Postgres database. Create the database, set the three production variables
-above, and deploy. The schema is created on first request. The daily cron in `vercel.json` works on the Hobby plan.
-More frequent refits happen lazily on page views.
+Live at **https://power-rank.vercel.app**. Vercel project `power-rank` (team `saafir-s-projects`), deploying on every
+push to `main`. Postgres is a Neon database on the free plan, attached through the Vercel Marketplace, which sets
+`DATABASE_URL` for Production and Preview. `POWER_RANK_SECRET` and `CRON_SECRET` are random values stored as Vercel
+Sensitive variables (Production only, so Preview deployments do not run). The schema and seed are applied on the
+first request. The daily cron in `vercel.json` refits and purges old rate-limit rows; more frequent refits happen
+lazily on page views. On Vercel the app refuses to start without `DATABASE_URL` rather than fall back to PGlite on
+a temporary disk.
 
 ## Layout
 

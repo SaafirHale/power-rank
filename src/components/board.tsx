@@ -127,7 +127,7 @@ export function Board({
 export function FitMeta({ fittedAt, nVotes }: { fittedAt: Date; nVotes: number }) {
   return (
     <p className="meta">
-      Bradley-Terry fit over {nVotes.toLocaleString("en-US")} votes, last computed{" "}
+      Bradley-Terry fit over {nVotes.toLocaleString("en-US")} {nVotes === 1 ? "vote" : "votes"}, last computed{" "}
       <time dateTime={fittedAt.toISOString()}>
         {fittedAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" })} UTC
       </time>

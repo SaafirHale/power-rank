@@ -1,8 +1,7 @@
 # Portfolio entry (draft)
 
 A draft in the shape of the `Project` type in `saafirhale-site/src/content/projects.ts`. Every claim can be checked
-against this repo. `status` is `"personal"` because the site is not deployed yet. Once it is live, switch it to
-`"live"` and add the link.
+against this repo or the live site.
 
 ```ts
   {
@@ -18,15 +17,13 @@ against this repo. `status` is `"personal"` because the site is not deployed yet
       "Matchmaking weights each pair by p(1−p) times the two ratings' summed variance, so even fights between characters the model is unsure about come up most, with one draw in ten fully random so no pair is starved. The controversial page ranks pairs by the Wilson lower bound of the losing side's share, which rewards a close split and a large sample together.",
       "There are no accounts. A signed cookie and a unique index allow one vote per pair per visitor per day, and each matchup is a signed, expiring token tied to that cookie, so scripts cannot pick their own fights. Rate limits key on an HMAC of the client address under a salt that rotates every UTC day, so no IP address is ever stored. Locally the app runs on PGlite, Postgres compiled to WASM, so it needs no database install or account, and 25 Vitest tests cover the model, the matchmaking and the abuse limits against a real Postgres engine.",
     ],
-    stack: ["Next.js", "TypeScript", "PostgreSQL", "PGlite", "Vitest"],
-    links: [],
-    status: "personal",
+    stack: ["Next.js", "TypeScript", "Postgres (Neon)", "PGlite", "Vitest", "Vercel"],
+    links: [{ label: "power-rank.vercel.app", href: "https://power-rank.vercel.app" }],
+    status: "live",
   },
 ```
 
 ## Before publishing
 
-- Deploy (Neon + Vercel per the README), then set `status: "live"`, add the link, and add "Vercel" and "Neon" to
-  `stack`.
 - The body describes mechanics only. Once the site has real votes, a sentence on real usage (vote count, most
   controversial fight) can go in, taken from the live boards rather than the simulated dev data.
