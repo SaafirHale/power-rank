@@ -1,3 +1,4 @@
 {
+  "framework": "nextjs",
   "crons": [{ "path": "/api/cron/refit", "schedule": "0 5 * * *" }]
 }

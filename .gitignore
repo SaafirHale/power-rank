@@ -8,3 +8,6 @@ next-env.d.ts
 .npm-install.log
 .vercel
 screenshots/raw/
+
+.vercel
+.env*
