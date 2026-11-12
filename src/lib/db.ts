@@ -89,6 +89,8 @@ const g = globalThis as unknown as { __powerRankDb?: Promise<Db> };
 export function getDb(): Promise<Db> {
   if (!g.__powerRankDb) {
     const url = process.env.DATABASE_URL;
+    // Serverless disks are temporary: PGlite there would silently lose every vote.
+    if (!url && process.env.VERCEL) throw new Error("DATABASE_URL is not set");
     g.__powerRankDb = (url ? createPgDb(url) : createPgliteDb(process.env.PGLITE_DIR ?? ".data/pglite")).then(prepare);
     g.__powerRankDb.catch(() => (g.__powerRankDb = undefined));
   }
